@@ -16,6 +16,7 @@ interface PortfolioDetail {
   uid: string;
   title: string;
   description: string;
+  isVisible: boolean;
   galleries: Gallery[];
 }
 
@@ -23,7 +24,7 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ uid:
   const { uid } = use(params);
   const queryClient = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
-  const [formData, setFormData] = useState({ title: '', description: '' });
+  const [formData, setFormData] = useState({ title: '', description: '', isVisible: true });
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -31,14 +32,14 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ uid:
   const { data: portfolio, isLoading } = useQuery<PortfolioDetail>({
     queryKey: ['portfolio', uid],
     queryFn: async () => {
-      const res = await fetch(`/api/v1/portfolio/${uid}`);
+      const res = await fetch(`/api/v1/portfolio/${uid}?all=true`);
       if (!res.ok) throw new Error('Not found');
       return res.json();
     },
     enabled: !!uid,
     select: (data) => {
       if (!dataLoaded) {
-        setFormData({ title: data.title, description: data.description });
+        setFormData({ title: data.title, description: data.description, isVisible: data.isVisible });
         setDataLoaded(true);
       }
       return data;
@@ -50,7 +51,7 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ uid:
       const res = await fetch(`/api/v1/portfolio/${uid}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: formData.title, description: formData.description }),
+        body: JSON.stringify({ title: formData.title, description: formData.description, isVisible: formData.isVisible }),
       });
       if (!res.ok) throw new Error('Update failed');
       return res.json();
@@ -131,6 +132,25 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ uid:
               onChange={(val) => setFormData({ ...formData, description: val })}
               placeholder="Project details..."
             />
+          </div>
+          <div className="flex items-center gap-3 py-2">
+            <button
+              type="button"
+              onClick={() => setFormData({ ...formData, isVisible: !formData.isVisible })}
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                formData.isVisible ? 'bg-primary' : 'bg-muted-foreground/30'
+              }`}
+            >
+              <span 
+                className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                  formData.isVisible ? 'translate-x-4' : 'translate-x-1'
+                }`} 
+              />
+            </button>
+            <div>
+              <p className="text-sm font-medium text-foreground">Visible on Website</p>
+              <p className="text-xs text-muted-foreground">Turn off to hide this project from the public portfolio.</p>
+            </div>
           </div>
           <button
             onClick={() => updateMutation.mutate()}

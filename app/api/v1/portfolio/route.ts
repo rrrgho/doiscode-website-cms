@@ -2,11 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 // GET /api/v1/portfolio — returns all portfolios WITHOUT galleries
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const showAll = searchParams.get('all') === 'true';
+
     const portfolios = await prisma.portfolio.findMany({
+      where: showAll ? {} : { isVisible: true },
       orderBy: { createdAt: 'desc' },
-      select: { uid: true, title: true, description: true, createdAt: true },
+      select: { uid: true, title: true, description: true, isVisible: true, createdAt: true },
     });
     return NextResponse.json(portfolios);
   } catch (error) {

@@ -8,10 +8,11 @@ interface Client {
   id: string;
   client_name: string;
   image: string;
+  isVisible: boolean;
 }
 
 async function fetchClients(): Promise<Client[]> {
-  const res = await fetch('/api/v1/clients');
+  const res = await fetch('/api/v1/clients?all=true');
   if (!res.ok) throw new Error('Failed to fetch');
   return res.json();
 }
@@ -32,6 +33,18 @@ export default function ClientsPage() {
     mutationFn: async (id: string) => {
       const res = await fetch(`/api/v1/clients/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['clients'] }),
+  });
+
+  const toggleMutation = useMutation({
+    mutationFn: async ({ id, isVisible }: { id: string; isVisible: boolean }) => {
+      const res = await fetch(`/api/v1/clients/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isVisible }),
+      });
+      if (!res.ok) throw new Error('Toggle failed');
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['clients'] }),
   });
@@ -143,6 +156,26 @@ export default function ClientsPage() {
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-foreground truncate">{client.client_name}</p>
                   <p className="text-xs text-muted-foreground truncate">{client.image}</p>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => toggleMutation.mutate({ id: client.id, isVisible: !client.isVisible })}
+                    disabled={toggleMutation.isPending}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                      client.isVisible ? 'bg-primary' : 'bg-muted-foreground/30'
+                    }`}
+                    title={client.isVisible ? "Visible on website" : "Hidden from website"}
+                  >
+                    <span 
+                      className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                        client.isVisible ? 'translate-x-4' : 'translate-x-1'
+                      }`} 
+                    />
+                  </button>
+                  <span className="text-xs font-medium w-12 text-muted-foreground">
+                    {client.isVisible ? 'Visible' : 'Hidden'}
+                  </span>
                 </div>
                 <button
                   onClick={() => deleteMutation.mutate(client.id)}

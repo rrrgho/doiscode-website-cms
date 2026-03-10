@@ -3,18 +3,23 @@ import { prisma } from '@/lib/prisma';
 
 // GET /api/v1/portfolio/[uid] — returns portfolio with galleries
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ uid: string }> }
 ) {
   try {
     const { uid } = await params;
+    
+    const { searchParams } = new URL(req.url);
+    const showAll = searchParams.get('all') === 'true';
+
     const portfolio = await prisma.portfolio.findUnique({
       where: { uid },
       include: {
         galleries: { orderBy: { createdAt: 'asc' } },
       },
     });
-    if (!portfolio) {
+
+    if (!portfolio || (!showAll && !portfolio.isVisible)) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
     return NextResponse.json(portfolio);
@@ -31,10 +36,10 @@ export async function PUT(
 ) {
   try {
     const { uid } = await params;
-    const { title, description } = await req.json();
+    const { title, description, isVisible } = await req.json();
     const portfolio = await prisma.portfolio.update({
       where: { uid },
-      data: { title, description },
+      data: { title, description, isVisible },
     });
     return NextResponse.json(portfolio);
   } catch (error) {

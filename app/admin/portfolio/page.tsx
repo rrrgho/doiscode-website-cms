@@ -10,11 +10,12 @@ interface Portfolio {
   uid: string;
   title: string;
   description: string;
+  isVisible: boolean;
   createdAt: string;
 }
 
 async function fetchPortfolios(): Promise<Portfolio[]> {
-  const res = await fetch('/api/v1/portfolio');
+  const res = await fetch('/api/v1/portfolio?all=true');
   if (!res.ok) throw new Error('Failed to fetch');
   return res.json();
 }
@@ -55,6 +56,18 @@ export default function PortfolioPage() {
     mutationFn: async (uid: string) => {
       const res = await fetch(`/api/v1/portfolio/${uid}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['portfolios'] }),
+  });
+
+  const toggleMutation = useMutation({
+    mutationFn: async ({ uid, isVisible }: { uid: string; isVisible: boolean }) => {
+      const res = await fetch(`/api/v1/portfolio/${uid}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isVisible }),
+      });
+      if (!res.ok) throw new Error('Toggle failed');
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['portfolios'] }),
   });
@@ -157,6 +170,27 @@ export default function PortfolioPage() {
                   <p className="font-semibold text-foreground truncate">{p.title}</p>
                   <p className="mt-0.5 text-sm text-muted-foreground line-clamp-1">{p.description}</p>
                 </div>
+                
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => toggleMutation.mutate({ uid: p.uid, isVisible: !p.isVisible })}
+                    disabled={toggleMutation.isPending}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                      p.isVisible ? 'bg-primary' : 'bg-muted-foreground/30'
+                    }`}
+                    title={p.isVisible ? "Visible on website" : "Hidden from website"}
+                  >
+                    <span 
+                      className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                        p.isVisible ? 'translate-x-4' : 'translate-x-1'
+                      }`} 
+                    />
+                  </button>
+                  <span className="text-xs font-medium w-12 text-muted-foreground">
+                    {p.isVisible ? 'Visible' : 'Hidden'}
+                  </span>
+                </div>
+
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <Link
                     href={`/admin/portfolio/${p.uid}`}
