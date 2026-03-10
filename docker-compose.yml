@@ -11,6 +11,8 @@ services:
       # Exposes container port 3000 to host port 3000
       # Your Apache reverse proxy will forward traffic to localhost:3000
       - "3000:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       # Set your production environment variables here or via a .env file on the server
       - NODE_ENV=production
