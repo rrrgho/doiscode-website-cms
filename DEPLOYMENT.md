@@ -103,6 +103,27 @@ Run this locally before deployment if your production DB is publicly accessible:
 npx prisma db push
 ```
 
+## Updating Your Project
+When you make changes locally and push them to your repository, follow these steps on your VPS to deploy the updates:
+
+1. **Pull the latest code:**
+   ```bash
+   cd /var/www/doiscode # Or your project directory
+   git pull origin main
+   ```
+
+2. **Rebuild and restart the container:**
+   The `--build` flag is crucial here; it forces Docker to install any new dependencies and create a fresh Next.js production build with your new code.
+   ```bash
+   sudo docker-compose up -d --build
+   ```
+
+3. **(Optional) Run database migrations:**
+   If your update included changes to `schema.prisma`, apply them:
+   ```bash
+   sudo docker exec -it doiscode-cms npx prisma db push
+   ```
+
 ## Troubleshooting
 - **Website shows 502 Bad Gateway:** The Docker container is likely not running or crashed. Check the logs:
   ```bash
