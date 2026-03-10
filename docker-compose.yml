@@ -15,9 +15,8 @@ services:
       # Set your production environment variables here or via a .env file on the server
       - NODE_ENV=production
       - NEXT_PUBLIC_BASE_URL=https://temp.doiscode.com
-      # Postgres connection string (since it's on the exact same VPS and accessible via its public IP)
-      - DATABASE_URL=postgresql://postgres:wiHifod6969%3F@31.97.107.242:5432/doiscode_website
-      - JWT_SECRET="doiscode-cms-super-secret-jwt-key-change-in-production"
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
       
     # If using local network, attach it properly. 
     # Since Postgres is external, standard bridge is fine.
