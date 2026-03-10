@@ -104,33 +104,33 @@ npx prisma db push
 ```
 
 ## Updating Your Project
-When you make changes locally and push them to your repository, follow these steps on your VPS to deploy the updates:
+When you make changes locally and push them to your GitHub repository, follow these precise steps on your VPS to deploy the updates:
 
-1. **Pull the latest code:**
+**1. Pull the latest code:**
    ```bash
-   cd /var/www/doiscode # Or your project directory
+   cd /var/www/doiscode
    git pull origin main
    ```
 
-2. **Rebuild and restart the container:**
-   The `--build` flag is crucial here; it forces Docker to install any new dependencies and create a fresh Next.js production build with your new code.
+**2. Rebuild and restart the container:**
+   These commands will force Docker to install any new dependencies, create a fresh Next.js production build, stop the old version, and start the new one.
    ```bash
-   sudo docker-compose up -d --build
+   sudo docker-compose build
+   sudo docker-compose down
+   sudo docker-compose up -d
    ```
 
-3. **(Optional) Run database migrations:**
-   If your update included changes to `schema.prisma`, apply them:
+**3. (Optional) Run database migrations:**
+   If your update included any changes to `schema.prisma` (like adding a new table or column), you must apply them to the database by running:
    ```bash
-   sudo docker exec -it doiscode-cms npx prisma db push
+   sudo docker exec -it doiscode-cms npx prisma@6 db push
    ```
+
+---
 
 ## Troubleshooting
 - **Website shows 502 Bad Gateway:** The Docker container is likely not running or crashed. Check the logs:
   ```bash
   sudo docker logs doiscode-cms
   ```
-- **Updates aren't showing:** Make sure you rebuild the image after pulling new code:
-  ```bash
-  git pull
-  sudo docker-compose up -d --build
-  ```
+- **Updates aren't showing:** Make sure you ran all three Docker commands (`build`, `down`, `up -d`) sequentially after pulling code.
