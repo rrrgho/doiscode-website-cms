@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  imageUrl  String
+  createdAt DateTime @default(now())
+}
+
+model Portfolio {
+  uid         String             @id @default(cuid())
+  title       String
+  description String
+  createdAt   DateTime           @default(now())
+  galleries   PortfolioGallery[]
+}
+
+model PortfolioGallery {
+  id           String    @id @default(cuid())
+  portfolioUid String
+  imageUrl     String
+  createdAt    DateTime  @default(now())
+  portfolio    Portfolio @relation(fields: [portfolioUid], references: [uid], onDelete: Cascade)
+}
+
+model WebsiteSetting {
+  id           Int      @id @default(1)
+  primaryColor String   @default("#2563eb")
+  footerText   String   @default("© 2025 Doiscode Technology. All rights reserved.")
+  address      String   @default("")
+  phone        String   @default("")
+  email        String   @default("")
+  updatedAt    DateTime @updatedAt
+}

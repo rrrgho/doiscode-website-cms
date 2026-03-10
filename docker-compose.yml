@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  doiscode-cms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: doiscode-cms
+    restart: unless-stopped
+    ports:
+      # Exposes container port 3000 to host port 3000
+      # Your Apache reverse proxy will forward traffic to localhost:3000
+      - "3000:3000"
+    environment:
+      # Set your production environment variables here or via a .env file on the server
+      - NODE_ENV=production
+      - NEXT_PUBLIC_BASE_URL=https://your-actual-domain.com
+      - DB_CONNECTION=pgsql
+      - DB_HOST=31.97.107.242 # Extracted from previous conversation
+      - DB_PORT=5432
+      - DB_DATABASE=doiscode_website
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=wiHifod6969?
+      - JWT_SECRET=your_super_secret_jwt_key_here
+      
+    # If using local network, attach it properly. 
+    # Since Postgres is external, standard bridge is fine.
