@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 // GET /api/v1/portfolio/[uid] — returns portfolio with galleries
 export async function GET(
@@ -41,6 +42,9 @@ export async function PUT(
       where: { uid },
       data: { title, description, isVisible },
     });
+    revalidatePath('/');
+    revalidatePath('/portfolio');
+    revalidatePath(`/portfolio/${uid}`);
     return NextResponse.json(portfolio);
   } catch (error) {
     console.error(error);
@@ -56,6 +60,8 @@ export async function DELETE(
   try {
     const { uid } = await params;
     await prisma.portfolio.delete({ where: { uid } });
+    revalidatePath('/');
+    revalidatePath('/portfolio');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 // GET /api/v1/clients — Public endpoint (for website consumption)
 export async function GET(req: NextRequest) {
@@ -32,6 +33,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'name and imageUrl are required' }, { status: 400 });
     }
     const client = await prisma.client.create({ data: { name, imageUrl } });
+    revalidatePath('/');
     return NextResponse.json(client, { status: 201 });
   } catch (error) {
     console.error(error);

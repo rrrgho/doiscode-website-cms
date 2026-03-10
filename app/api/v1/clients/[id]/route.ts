@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 export async function DELETE(
   _req: NextRequest,
@@ -8,6 +9,7 @@ export async function DELETE(
   try {
     const { id } = await params;
     await prisma.client.delete({ where: { id } });
+    revalidatePath('/');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);
@@ -25,6 +27,7 @@ export async function PATCH(
       where: { id },
       data: { isVisible },
     });
+    revalidatePath('/');
     return NextResponse.json(client);
   } catch (error) {
     console.error(error);

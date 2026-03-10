@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 // POST /api/v1/portfolio/[uid]/gallery — add gallery image
 export async function POST(
@@ -15,6 +16,7 @@ export async function POST(
     const gallery = await prisma.portfolioGallery.create({
       data: { portfolioUid: uid, imageUrl },
     });
+    revalidatePath(`/portfolio/${uid}`);
     return NextResponse.json(gallery, { status: 201 });
   } catch (error) {
     console.error(error);
@@ -32,6 +34,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'galleryId is required' }, { status: 400 });
     }
     await prisma.portfolioGallery.delete({ where: { id: galleryId } });
+    revalidatePath(`/portfolio`);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);
