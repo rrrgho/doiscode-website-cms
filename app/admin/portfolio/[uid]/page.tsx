@@ -16,6 +16,7 @@ interface PortfolioDetail {
   uid: string;
   title: string;
   description: string;
+  bannerUrl: string | null;
   isVisible: boolean;
   galleries: Gallery[];
 }
@@ -23,8 +24,10 @@ interface PortfolioDetail {
 export default function PortfolioDetailPage({ params }: { params: Promise<{ uid: string }> }) {
   const { uid } = use(params);
   const queryClient = useQueryClient();
+  const bannerRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const [formData, setFormData] = useState({ title: '', description: '', isVisible: true });
+  const [formData, setFormData] = useState({ title: '', description: '', isVisible: true, bannerUrl: '' });
+  const [bannerUploading, setBannerUploading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -39,7 +42,7 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ uid:
     enabled: !!uid,
     select: (data) => {
       if (!dataLoaded) {
-        setFormData({ title: data.title, description: data.description, isVisible: data.isVisible });
+        setFormData({ title: data.title, description: data.description, isVisible: data.isVisible, bannerUrl: data.bannerUrl || '' });
         setDataLoaded(true);
       }
       return data;
@@ -51,7 +54,7 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ uid:
       const res = await fetch(`/api/v1/portfolio/${uid}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: formData.title, description: formData.description, isVisible: formData.isVisible }),
+        body: JSON.stringify({ title: formData.title, description: formData.description, isVisible: formData.isVisible, bannerUrl: formData.bannerUrl }),
       });
       if (!res.ok) throw new Error('Update failed');
       return res.json();
@@ -70,7 +73,7 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ uid:
   async function handleGalleryUpload(e: React.FormEvent) {
     e.preventDefault();
     setError('');
-    const file = fileRef.current?.files?.[0];
+    const file = fileRef?.current?.files?.[0];
     if (!file) { setError('Please select an image.'); return; }
     setUploading(true);
     try {
@@ -92,6 +95,28 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ uid:
       setError(err instanceof Error ? err.message : 'Error');
     } finally {
       setUploading(false);
+    }
+  }
+
+  async function handleBannerUpload(e: React.FormEvent) {
+    e.preventDefault();
+    setError('');
+    const file = bannerRef.current?.files?.[0];
+    if (!file) { setError('Please select a banner image.'); return; }
+    setBannerUploading(true);
+    try {
+      const uploadData = new FormData();
+      uploadData.append('file', file);
+      const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadData });
+      if (!uploadRes.ok) throw new Error('Upload failed');
+      const { imageUrl } = await uploadRes.json();
+      
+      setFormData((prev) => ({ ...prev, bannerUrl: imageUrl }));
+      if (bannerRef.current) bannerRef.current.value = '';
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error');
+    } finally {
+      setBannerUploading(false);
     }
   }
 
@@ -132,6 +157,45 @@ export default function PortfolioDetailPage({ params }: { params: Promise<{ uid:
               onChange={(val) => setFormData({ ...formData, description: val })}
               placeholder="Project details..."
             />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-foreground">Banner Image</label>
+            <div className="flex flex-col gap-3">
+              {formData.bannerUrl ? (
+                <div className="relative overflow-hidden rounded-lg border border-border">
+                  <img src={formData.bannerUrl} alt="Banner" className="max-h-48 w-full object-cover" />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity hover:opacity-100">
+                    <button
+                      type="button"
+                      onClick={() => setFormData((prev) => ({ ...prev, bannerUrl: '' }))}
+                      className="rounded-full bg-destructive p-2 text-white hover:bg-destructive/80"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-end gap-3">
+                  <div className="flex-1">
+                    <input
+                      type="file"
+                      ref={bannerRef}
+                      accept="image/*"
+                      className="w-full rounded-lg border border-input bg-background px-4 py-2 text-sm text-foreground file:mr-3 file:rounded file:border-0 file:bg-primary file:px-3 file:py-1 file:text-xs file:font-medium file:text-primary-foreground"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleBannerUpload}
+                    disabled={bannerUploading}
+                    className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-60 whitespace-nowrap"
+                  >
+                    {bannerUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                    Upload Banner
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-3 py-2">
             <button

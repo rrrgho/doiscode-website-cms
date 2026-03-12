@@ -20,11 +20,11 @@ export function Footer({ settings }: FooterProps) {
           <div className="md:col-span-2">
             <Link href="/" className="mb-5 inline-block">
               <Image
-                src="/images/logo.png"
+                src="/images/app-logo.png"
                 alt="Doiscode Technology"
-                width={140}
-                height={40}
-                className="h-10 w-auto object-contain"
+                width={250}
+                height={100}
+                className="h-30 w-auto object-contain"
               />
             </Link>
             <p className="text-sm leading-relaxed text-muted-foreground max-w-xs">

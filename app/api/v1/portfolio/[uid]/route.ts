@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { unlink } from 'fs/promises';
+import { join } from 'path';
 
 // GET /api/v1/portfolio/[uid] — returns portfolio with galleries
 export async function GET(
@@ -37,10 +39,10 @@ export async function PUT(
 ) {
   try {
     const { uid } = await params;
-    const { title, description, isVisible } = await req.json();
+    const { title, description, isVisible, bannerUrl } = await req.json();
     const portfolio = await prisma.portfolio.update({
       where: { uid },
-      data: { title, description, isVisible },
+      data: { title, description, isVisible, bannerUrl },
     });
     revalidatePath('/', 'layout');
     return NextResponse.json(portfolio);
@@ -57,7 +59,26 @@ export async function DELETE(
 ) {
   try {
     const { uid } = await params;
+    // First find the portfolio to get the bannerUrl
+    const portfolio = await prisma.portfolio.findUnique({ where: { uid } });
+    if (!portfolio) {
+      return NextResponse.json({ error: 'Portfolio not found' }, { status: 404 });
+    }
+
     await prisma.portfolio.delete({ where: { uid } });
+
+    // Try to delete the banner file
+    if (portfolio.bannerUrl) {
+      try {
+        const filename = portfolio.bannerUrl.split('/').pop();
+        if (filename) {
+          const filepath = join(process.cwd(), 'public', 'uploads', filename);
+          await unlink(filepath);
+        }
+      } catch (err) {
+        console.error('Failed to delete portfolio banner file:', err);
+      }
+    }
     revalidatePath('/', 'layout');
     return NextResponse.json({ success: true });
   } catch (error) {

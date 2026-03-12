@@ -9,7 +9,7 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center">
           <Image
-            src="/images/logo.png"
+            src="/images/app-logo.png"
             alt="Doiscode Technology"
             width={250}
             height={100}

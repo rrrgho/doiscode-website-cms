@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const portfolios = await prisma.portfolio.findMany({
       where: showAll ? {} : { isVisible: true },
       orderBy: { createdAt: 'desc' },
-      select: { uid: true, title: true, description: true, isVisible: true, createdAt: true },
+      select: { uid: true, title: true, description: true, bannerUrl: true, isVisible: true, createdAt: true },
     });
     return NextResponse.json(portfolios);
   } catch (error) {
@@ -23,11 +23,11 @@ export async function GET(req: NextRequest) {
 // POST /api/v1/portfolio — create a new portfolio
 export async function POST(req: NextRequest) {
   try {
-    const { title, description } = await req.json();
+    const { title, description, bannerUrl } = await req.json();
     if (!title || !description) {
       return NextResponse.json({ error: 'title and description are required' }, { status: 400 });
     }
-    const portfolio = await prisma.portfolio.create({ data: { title, description } });
+    const portfolio = await prisma.portfolio.create({ data: { title, description, bannerUrl } });
     revalidatePath('/', 'layout');
     return NextResponse.json(portfolio, { status: 201 });
   } catch (error) {

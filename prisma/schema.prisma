@@ -26,6 +26,7 @@ model Portfolio {
   uid         String             @id @default(cuid())
   title       String
   description String
+  bannerUrl   String?
   isVisible   Boolean            @default(true)
   createdAt   DateTime           @default(now())
   galleries   PortfolioGallery[]

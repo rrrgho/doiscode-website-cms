@@ -11,6 +11,7 @@ interface PortfolioDetail {
   uid: string;
   title: string;
   description: string;
+  bannerUrl: string | null;
   createdAt: string;
   galleries: Gallery[];
 }
@@ -55,6 +56,13 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
             </div>
             <span className="text-xs font-semibold uppercase tracking-widest brand-text">Case Study</span>
           </div>
+
+          {portfolio.bannerUrl && (
+            <div className="mb-8 overflow-hidden rounded-2xl border border-border shadow-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={portfolio.bannerUrl} alt={`${portfolio.title} banner`} className="w-full h-auto object-cover max-h-[500px]" />
+            </div>
+          )}
 
           <h1 className="mb-6 text-4xl font-extrabold text-foreground md:text-5xl leading-tight">
             {portfolio.title}
