@@ -17,6 +17,8 @@ services:
       - NEXT_PUBLIC_BASE_URL=https://temp.doiscode.com
       - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${JWT_SECRET}
-      
-    # If using local network, attach it properly. 
-    # Since Postgres is external, standard bridge is fine.
+    volumes:
+      - doiscode_uploads:/app/public/uploads
+
+volumes:
+  doiscode_uploads:
