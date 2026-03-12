@@ -134,3 +134,25 @@ When you make changes locally and push them to your GitHub repository, follow th
   sudo docker logs doiscode-cms
   ```
 - **Updates aren't showing:** Make sure you ran all three Docker commands (`build`, `down`, `up -d`) sequentially after pulling code.
+
+---
+
+## Managing Uploaded Files
+
+Since uploaded images are stored persistently inside a Docker volume (`doiscode_uploads`), they are not directly accessible via your host machine's standard filesystem paths.
+
+**To view all uploaded files:**
+```bash
+sudo docker exec -it doiscode-cms ls -la /app/public/uploads
+```
+
+**To delete a specific uploaded file:**
+```bash
+sudo docker exec -it doiscode-cms rm /app/public/uploads/FILENAME.jpg
+```
+*(Replace `FILENAME.jpg` with the actual file name)*
+
+**To delete ALL uploaded files at once (Caution!):**
+```bash
+sudo docker exec -it doiscode-cms sh -c "rm -rf /app/public/uploads/*"
+```
