@@ -18,7 +18,7 @@ export async function POST(
     const gallery = await prisma.portfolioGallery.create({
       data: { portfolioUid: uid, imageUrl },
     });
-    revalidatePath(`/portfolio/${uid}`);
+    revalidatePath('/', 'layout');
     return NextResponse.json(gallery, { status: 201 });
   } catch (error) {
     console.error(error);
@@ -58,7 +58,7 @@ export async function DELETE(
       }
     }
 
-    revalidatePath(`/portfolio`);
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);

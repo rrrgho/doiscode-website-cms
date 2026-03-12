@@ -28,8 +28,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'title and description are required' }, { status: 400 });
     }
     const portfolio = await prisma.portfolio.create({ data: { title, description } });
-    revalidatePath('/');
-    revalidatePath('/portfolio');
+    revalidatePath('/', 'layout');
     return NextResponse.json(portfolio, { status: 201 });
   } catch (error) {
     console.error(error);

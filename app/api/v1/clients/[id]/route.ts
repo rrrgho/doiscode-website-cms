@@ -34,7 +34,7 @@ export async function DELETE(
       }
     }
 
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);
@@ -52,7 +52,7 @@ export async function PATCH(
       where: { id },
       data: { isVisible },
     });
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     return NextResponse.json(client);
   } catch (error) {
     console.error(error);

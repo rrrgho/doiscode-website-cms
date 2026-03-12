@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'name and imageUrl are required' }, { status: 400 });
     }
     const client = await prisma.client.create({ data: { name, imageUrl } });
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     return NextResponse.json(client, { status: 201 });
   } catch (error) {
     console.error(error);

@@ -42,9 +42,7 @@ export async function PUT(
       where: { uid },
       data: { title, description, isVisible },
     });
-    revalidatePath('/');
-    revalidatePath('/portfolio');
-    revalidatePath(`/portfolio/${uid}`);
+    revalidatePath('/', 'layout');
     return NextResponse.json(portfolio);
   } catch (error) {
     console.error(error);
@@ -60,8 +58,7 @@ export async function DELETE(
   try {
     const { uid } = await params;
     await prisma.portfolio.delete({ where: { uid } });
-    revalidatePath('/');
-    revalidatePath('/portfolio');
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);
