@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import { Navbar } from '@/components/public/Navbar';
 import { Footer } from '@/components/public/Footer';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function getSettings() {
   try {
     const settings = await prisma.websiteSetting.findUnique({ where: { id: 1 } });

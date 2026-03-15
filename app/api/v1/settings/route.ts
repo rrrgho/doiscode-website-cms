@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 // GET /api/v1/settings
 export async function GET() {
@@ -39,6 +40,7 @@ export async function PUT(req: NextRequest) {
         email: body.email || '',
       },
     });
+    revalidatePath('/', 'layout');
     return NextResponse.json(settings);
   } catch (error) {
     console.error(error);
