@@ -61,15 +61,15 @@ sudo docker ps
 ```
 
 ### 5. Configure Apache Reverse Proxy
-Create an Apache configuration file for your domain (e.g., `temp.doiscode.com`):
+Create an Apache configuration file for your domain (e.g., `doiscode.com`):
 ```bash
 sudo nano /etc/apache2/sites-available/doiscode.conf
 ```
 Paste the following, swapping out your actual domain:
 ```apache
 <VirtualHost *:80>
-    ServerName temp.doiscode.com
-    # ServerAlias www.temp.doiscode.com
+    ServerName doiscode.com
+    # ServerAlias www.doiscode.com
 
     ProxyPreserveHost On
     ProxyPass / http://localhost:3000/
