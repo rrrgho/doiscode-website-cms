@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
 import { BarChart3, ChevronRight, Briefcase } from 'lucide-react';
 
 interface Portfolio {
@@ -10,10 +11,15 @@ interface Portfolio {
 
 async function getPortfolios(): Promise<Portfolio[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/v1/portfolio`, { next: { revalidate: 3600 } });
-    if (!res.ok) return [];
-    return res.json();
+    const portfolios = await prisma.portfolio.findMany({
+      where: { isVisible: true },
+      orderBy: { createdAt: 'desc' },
+      select: { uid: true, title: true, description: true, createdAt: true },
+    });
+    return portfolios.map((p: any) => ({
+      ...p,
+      createdAt: p.createdAt.toISOString()
+    }));
   } catch {
     return [];
   }

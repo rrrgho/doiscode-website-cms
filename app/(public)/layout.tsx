@@ -1,12 +1,11 @@
+import { prisma } from '@/lib/prisma';
 import { Navbar } from '@/components/public/Navbar';
 import { Footer } from '@/components/public/Footer';
 
 async function getSettings() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/v1/settings`, { next: { revalidate: 60 } });
-    if (!res.ok) return null;
-    return res.json();
+    const settings = await prisma.websiteSetting.findUnique({ where: { id: 1 } });
+    return settings;
   } catch {
     return null;
   }

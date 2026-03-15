@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
 import { ArrowLeft, Images, BarChart3 } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
@@ -18,11 +19,15 @@ interface PortfolioDetail {
 
 async function getPortfolio(uid: string): Promise<PortfolioDetail | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/v1/portfolio/${uid}`, { next: { revalidate: 3600 } });
-    if (res.status === 404) return null;
-    if (!res.ok) return null;
-    return res.json();
+    const portfolio = await prisma.portfolio.findUnique({
+      where: { uid },
+      include: { galleries: true },
+    });
+    if (!portfolio || !portfolio.isVisible) return null;
+    return {
+      ...portfolio,
+      createdAt: portfolio.createdAt.toISOString()
+    };
   } catch {
     return null;
   }
