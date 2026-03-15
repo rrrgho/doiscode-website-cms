@@ -21,7 +21,7 @@ async function main() {
     create: {
       id: 1,
       primaryColor: '#2563eb',
-      footerText: '© 2025 Doiscode Technology. All rights reserved.',
+      footerText: '© 2022 Doiscode Technology. All rights reserved.',
       address: 'Jakarta, Indonesia',
       phone: '+62 812 3456 7890',
       email: 'hello@doiscode.com',

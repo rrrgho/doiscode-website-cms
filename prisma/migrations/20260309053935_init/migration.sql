@@ -42,7 +42,7 @@ CREATE TABLE "PortfolioGallery" (
 CREATE TABLE "WebsiteSetting" (
     "id" INTEGER NOT NULL DEFAULT 1,
     "primaryColor" TEXT NOT NULL DEFAULT '#2563eb',
-    "footerText" TEXT NOT NULL DEFAULT '© 2025 Doiscode Technology. All rights reserved.',
+    "footerText" TEXT NOT NULL DEFAULT '© 2022 Doiscode Technology. All rights reserved.',
     "address" TEXT NOT NULL DEFAULT '',
     "phone" TEXT NOT NULL DEFAULT '',
     "email" TEXT NOT NULL DEFAULT '',

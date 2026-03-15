@@ -64,9 +64,8 @@ const services = [
 
 const stats = [
   { value: '6+', label: 'Years of Experience' },
-  { value: '30+', label: 'Projects Delivered' },
-  { value: '2', label: 'Countries Served' },
-  { value: '100%', label: 'Client Satisfaction' },
+  { value: '100%', label: 'Great Service' },
+  { value: '100%', label: 'Best Price' },
 ];
 
 export default async function HomePage() {
@@ -121,7 +120,7 @@ export default async function HomePage() {
         </div>
 
         {/* Stats row */}
-        <div className="relative mx-auto mt-20 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="relative mx-auto mt-20 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-3">
           {stats.map(({ value, label }) => (
             <div key={label} className="rounded-2xl border border-border bg-card p-5 backdrop-blur">
               <p className="text-3xl font-extrabold brand-text">{value}</p>

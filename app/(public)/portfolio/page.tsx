@@ -20,8 +20,9 @@ async function getPortfolios(): Promise<Portfolio[]> {
 }
 
 export const metadata = {
-  title: 'Portfolio — Doiscode Technology',
-  description: 'Explore our software projects built for Palm Oil and Agriculture industries across Indonesia and Malaysia.',
+  title: 'Portfolio',
+  description: 'Explore our software projects built for Palm Oil and Agriculture industries. See why we are the top Software House company for agribusiness in Indonesia and Malaysia.',
+  keywords: ['Software House company portfolio', 'Software house for agribusiness', 'Agribusiness software projects', 'Palm oil technology solutions'],
 };
 
 export default async function PortfolioPage() {

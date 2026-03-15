@@ -3,8 +3,9 @@ import { ArrowRight, Target, Zap, Globe, Users,ShieldCheck, TrendingUp } from 'l
 import Image from 'next/image';
 
 export const metadata = {
-  title: 'About Us — Doiscode Technology',
-  description: 'Learn about Doiscode Technology — a software house focused on empowering Palm Oil and Agriculture industries across Indonesia and Malaysia with modern software.',
+  title: 'About',
+  description: 'Learn about Doiscode Technology — a Software House company focused on empowering Palm Oil and Agriculture industries across Indonesia and Malaysia with custom agribusiness software.',
+  keywords: ['Software House company', 'Software house for agribusiness', 'Palm Oil software', 'Agritech Indonesia', 'Custom software Malaysia'],
 };
 
 const values = [
@@ -63,7 +64,7 @@ export default function AboutPage() {
               <div className="mt-8 grid grid-cols-2 gap-4 text-center">
                 {[
                   { v: '6+', l: 'Years' },
-                  { v: '30+', l: 'Projects' },
+                  // { v: '15+', l: 'Projects' },
                   { v: '2', l: 'Countries' },
                   { v: '100%', l: 'Satisfaction' },
                 ].map(({ v, l }) => (
@@ -100,7 +101,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className="bg-background px-6 py-20">
+      {/* <section className="bg-background px-6 py-20">
         <div className="mx-auto max-w-4xl">
           <div className="mb-12 text-center">
             <p className="mb-2 text-xs font-semibold uppercase tracking-widest brand-text">The People</p>
@@ -119,7 +120,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }

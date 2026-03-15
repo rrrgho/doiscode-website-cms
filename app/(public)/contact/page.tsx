@@ -100,7 +100,7 @@ export default function ContactPage() {
                 {[
                   { key: 'name', label: 'Full Name', placeholder: 'Your name', type: 'text' },
                   { key: 'email', label: 'Email Address', placeholder: 'your@email.com', type: 'email' },
-                  { key: 'company', label: 'Company / Organization', placeholder: 'PT United Plantation', type: 'text' },
+                  { key: 'company', label: 'Company / Organization', placeholder: 'Your Company', type: 'text' },
                 ].map(({ key, label, placeholder, type }) => (
                   <div key={key}>
                     <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">

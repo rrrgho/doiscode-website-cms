@@ -87,7 +87,7 @@ export function Footer({ settings }: FooterProps) {
         </div>
 
         <div className="mt-12 border-t border-border pt-8 text-center text-xs text-muted-foreground">
-          {settings?.footerText || '© 2025 Doiscode Technology. All rights reserved.'}
+          {settings?.footerText || '© 2022 Doiscode Technology. All rights reserved.'}
         </div>
       </div>
     </footer>
