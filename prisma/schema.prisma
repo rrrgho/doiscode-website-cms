@@ -43,7 +43,7 @@ model PortfolioGallery {
 model WebsiteSetting {
   id           Int      @id @default(1)
   primaryColor String   @default("#2563eb")
-  footerText   String   @default("© 2025 Doiscode Technology. All rights reserved.")
+  footerText   String   @default("© 2022 Doiscode Technology. All rights reserved.")
   address      String   @default("")
   phone        String   @default("")
   email        String   @default("")

@@ -69,7 +69,7 @@ export default function SettingsPage() {
   }
 
   const fields: { key: keyof typeof form; label: string; type?: string; placeholder?: string }[] = [
-    { key: 'footerText', label: 'Footer Text', placeholder: '© 2025 Doiscode Technology. All rights reserved.' },
+    { key: 'footerText', label: 'Footer Text', placeholder: '© 2022 Doiscode Technology. All rights reserved.' },
     { key: 'address', label: 'Address', placeholder: 'Jakarta, Indonesia' },
     { key: 'phone', label: 'Phone Number', placeholder: '+62 812 3456 7890' },
     { key: 'email', label: 'Contact Email', type: 'email', placeholder: 'hello@doiscode.com' },
