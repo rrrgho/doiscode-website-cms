@@ -55,7 +55,7 @@ export default function AboutPage() {
           <div className="flex items-center justify-center">
             <div className="relative rounded-2xl border border-border bg-card p-10">
               <Image
-                src="/images/main-logo.png"
+                src="/images/logo.png"
                 alt="Doiscode Technology"
                 width={220}
                 height={80}

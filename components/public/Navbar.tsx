@@ -22,7 +22,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center z-50" onClick={() => setIsMobileMenuOpen(false)}>
             <Image
-              src="/images/main-logo.png"
+              src="/images/logo.png"
               alt="Doiscode Technology"
               width={250}
               height={100}

@@ -20,7 +20,7 @@ export function Footer({ settings }: FooterProps) {
           <div className="md:col-span-2">
             <Link href="/" className="mb-5 inline-block">
               <Image
-                src="/images/main-logo.png"
+                src="/images/logo.png"
                 alt="Doiscode Technology"
                 width={250}
                 height={100}
