@@ -115,7 +115,7 @@ When you make changes locally and push them to your GitHub repository, follow th
 **2. Rebuild and restart the container:**
    These commands will force Docker to install any new dependencies, create a fresh Next.js production build, stop the old version, and start the new one.
    ```bash
-   sudo docker-compose build
+   sudo docker-compose build --no-cache
    sudo docker-compose down
    sudo docker-compose up -d
    ```

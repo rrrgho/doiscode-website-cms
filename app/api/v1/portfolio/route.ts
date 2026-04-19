@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // GET /api/v1/portfolio — returns all portfolios WITHOUT galleries
 export async function GET(req: NextRequest) {
   try {

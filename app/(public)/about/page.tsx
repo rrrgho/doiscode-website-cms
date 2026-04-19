@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Target, Zap, Globe, Users,ShieldCheck, TrendingUp } from 'lucide-react';
+import { ArrowRight, Target, Zap, Globe, Users, ShieldCheck, TrendingUp, Quote } from 'lucide-react';
 import Image from 'next/image';
 
 export const metadata = {
@@ -96,6 +96,45 @@ export default function AboutPage() {
                 <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Director Section */}
+      <section className="relative overflow-hidden bg-background px-6 py-20 md:py-28">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute right-0 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-emerald-500/8 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-4xl">
+          <div className="mb-12 text-center">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest brand-text">Leadership</p>
+            <h2 className="text-3xl font-bold text-foreground">From the Director</h2>
+          </div>
+
+          <div className="mx-auto max-w-4xl rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm flex flex-col md:flex-row items-center md:items-start md:text-left text-center gap-8 md:gap-10">
+            <div className="flex-shrink-0">
+              <div className="mx-auto flex h-32 w-32 md:h-36 md:w-36 items-center justify-center overflow-hidden rounded-full bg-muted border-4 border-muted">
+                <Image
+                  src="/executives/director.jpg"
+                  alt="Rian Iregho - Founder & Director"
+                  width={144}
+                  height={144}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </div>
+            
+            <div className="flex-1">
+              <Quote className="mx-auto md:mx-0 mb-4 h-8 w-8 text-brand/30" />
+              <blockquote className="mb-6 text-lg font-medium leading-relaxed text-foreground md:text-xl">
+                "Bridging the gap between Big Tech engineering and the fundamental roots of Agribusiness. With over a decade of expertise in software architecture and a deep specialization in Palm Breeding operations, my mission is to propel the industry forward. By integrating high-caliber technology into the field, I empower plantations to transcend traditional limits and scale with absolute precision."
+              </blockquote>
+              
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Rian Iregho</h3>
+                <p className="mt-1 text-sm font-semibold brand-text">Founder & Director</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
