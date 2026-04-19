@@ -106,11 +106,6 @@ export default function AboutPage() {
           <div className="absolute right-0 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-emerald-500/8 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-4xl">
-          <div className="mb-12 text-center">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-widest brand-text">Leadership</p>
-            <h2 className="text-3xl font-bold text-foreground">From the Director</h2>
-          </div>
-
           <div className="mx-auto max-w-4xl rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm flex flex-col md:flex-row items-center md:items-start md:text-left text-center gap-8 md:gap-10">
             <div className="flex-shrink-0">
               <div className="mx-auto flex h-32 w-32 md:h-36 md:w-36 items-center justify-center overflow-hidden rounded-full bg-muted border-4 border-muted">
